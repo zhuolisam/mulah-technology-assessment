@@ -1,5 +1,5 @@
 # 📃Table Display
-<hr>
+
 This is an assessment for Mulah Technologies. It is a static web page that displays tabular data using HTML and JavaScript. It includes two tables: Table 1, which shows data from a CSV file, and Table 2, which calculates and displays values based on the data from Table 1.
 
 
