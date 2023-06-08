@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mulah Tables</title>
+    <style></style>
+    <head>
+      <meta charset="UTF-8" />
+      <meta charset="utc-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link href="/index.css" rel="stylesheet" type="text/css">      <title>Frontend</title>
+    </head>
+  </head>
+  <body>
+    <h1> Mulah Technologies</h1>
+    <h3>Table 1</h3>
+    <table id="table1">
+      <tr>
+        <th>Index #</th>
+        <th>Value</th>
+      </tr>
+    </table>
+
+    <h3>Table 2</h3>
+    <table>
+      <tr>
+        <th>Category</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Alpha</td>
+        <td id="alpha-value"></td>
+      </tr>
+      <tr>
+        <td>Beta</td>
+        <td id="beta-value"></td>
+      </tr>
+      <tr>
+        <td>Charlie</td>
+        <td id="charlie-value"></td>
+      </tr>
+    </table>
+    <footer>
+      <span>Powered by <a href="https://github.com/zhuolisam" target="'_blank">zhuolisam</a></span>
+    </footer>
+    <script>
+      // Read CSV file
+      function readCSVFile(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const lines = reader.result.split('\n');
+            const data = lines.slice(1).map(line => {
+              const [index, value] = line.trim().split(',');
+              return { index, value: parseInt(value) };
+            });
+            resolve(data);
+          };
+
+          reader.onerror = reject;
+
+          reader.readAsText(file);
+        });
+      }
+
+      // Construct Table 1
+      async function constructTable1(data) {
+        const table = document.getElementById('table1');
+
+        for (const item of data) {
+          const row = document.createElement('tr');
+          const indexCell = document.createElement('td');
+          const valueCell = document.createElement('td');
+
+          indexCell.textContent = item.index;
+          valueCell.textContent = item.value;
+
+          row.appendChild(indexCell);
+          row.appendChild(valueCell);
+
+          table.appendChild(row);
+        }
+      }
+
+      // Calculate and set values for Table 2
+      function calculateTable2(data) {
+        const alphaValue = data.find(item => item.index === 'A5').value + data.find(item => item.index === 'A20').value;
+        const betaValue = data.find(item => item.index === 'A15').value / data.find(item => item.index === 'A7').value;
+        const charlieValue = data.find(item => item.index === 'A13').value * data.find(item => item.index === 'A12').value;
+
+        document.getElementById('alpha-value').textContent = alphaValue;
+        document.getElementById('beta-value').textContent = betaValue;
+        document.getElementById('charlie-value').textContent = charlieValue;
+      }
+
+      // Main function
+      async function main() {
+        try {
+          const response = await fetch('assets/Table_Input.csv');
+          const text = await response.text();
+          const lines = text.split('\n');
+          const data = lines.slice(1).map(line => {
+            const [index, value] = line.trim().split(',');
+            return { index, value: parseInt(value) };
+          });
+
+          constructTable1(data);
+          calculateTable2(data);
+        } catch (error) {
+          console.error('Error reading CSV file:', error);
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>
