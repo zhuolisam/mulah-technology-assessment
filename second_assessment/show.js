@@ -1,5 +1,5 @@
 var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-var phoneNumber = localStorage.getItem('userInfo');
+var phoneNumber = localStorage.getItem('phoneNumber');
 
 var section = document.querySelector('section');
 
